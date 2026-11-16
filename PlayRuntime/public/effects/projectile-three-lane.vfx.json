@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "projectile.three-lane",
+  "duration": 0.88,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 1,
+      "min": 0.2,
+      "max": 3
+    },
+    "color": {
+      "type": "color",
+      "default": "#7eeeff"
+    }
+  },
+  "layers": [
+    {
+      "id": "three-lane-left",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 0.88,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": -28,
+        "size": 0.12,
+        "travel": 4.6,
+        "arcHeight": 0.34,
+        "trailLength": 0.9
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.8 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.82, "value": 0.9 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "three-lane-center",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 0.88,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": 0,
+        "size": 0.12,
+        "travel": 4.6,
+        "arcHeight": 0.34,
+        "trailLength": 0.9
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.8 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.82, "value": 0.9 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "three-lane-right",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 0.88,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": 28,
+        "size": 0.12,
+        "travel": 4.6,
+        "arcHeight": 0.34,
+        "trailLength": 0.9
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.8 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.82, "value": 0.9 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    }
+  ]
+}

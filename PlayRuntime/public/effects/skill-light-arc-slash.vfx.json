@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "id": "skill.light-arc-slash",
+  "duration": 0.62,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 2.4,
+      "min": 1.2,
+      "max": 3.2
+    },
+    "color": {
+      "type": "color",
+      "default": "#6DEBFF"
+    }
+  },
+  "layers": [
+    {
+      "id": "arc-glow",
+      "type": "slashArc",
+      "startAt": 0,
+      "duration": 0.58,
+      "geometry": {
+        "thickness": 0.3,
+        "startAngle": 205,
+        "sweepAngle": 145
+      },
+      "material": {
+        "color": "#338DFF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.18 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.8 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arc-core",
+      "type": "slashArc",
+      "startAt": 0.015,
+      "duration": 0.44,
+      "geometry": {
+        "thickness": 0.095,
+        "startAngle": 205,
+        "sweepAngle": 145
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.12 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 1 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arc-sparks",
+      "type": "shards",
+      "startAt": 0.025,
+      "duration": 0.595,
+      "geometry": {
+        "count": 28,
+        "size": 0.045,
+        "spread": 0.38,
+        "lift": 1.2,
+        "gravity": 2.6
+      },
+      "material": {
+        "color": "#D8FCFF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.16 },
+            { "t": 1, "value": 1.5, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 1 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    }
+  ]
+}

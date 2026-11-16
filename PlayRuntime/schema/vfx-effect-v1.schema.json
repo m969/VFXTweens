@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VFXTweens Effect Definition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "duration",
+    "space",
+    "params",
+    "layers"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9]+([.-][a-z0-9]+)*$"
+    },
+    "duration": { "type": "number", "exclusiveMinimum": 0 },
+    "space": { "const": "surface" },
+    "params": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/$defs/numberParameter" },
+          { "$ref": "#/$defs/colorParameter" }
+        ]
+      }
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/effectLayer" }
+    }
+  },
+  "$defs": {
+    "numberParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "default"],
+      "properties": {
+        "type": { "const": "number" },
+        "default": { "type": "number" },
+        "min": { "type": "number" },
+        "max": { "type": "number" }
+      }
+    },
+    "colorParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "default"],
+      "properties": {
+        "type": { "const": "color" },
+        "default": { "$ref": "#/$defs/color" }
+      }
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+    },
+    "parameterReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["param"],
+      "properties": {
+        "param": { "type": "string", "minLength": 1 }
+      }
+    },
+    "numberValue": {
+      "oneOf": [
+        { "type": "number" },
+        { "$ref": "#/$defs/parameterReference" }
+      ]
+    },
+    "colorValue": {
+      "oneOf": [
+        { "$ref": "#/$defs/color" },
+        { "$ref": "#/$defs/parameterReference" }
+      ]
+    },
+    "sampledEase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["samples"],
+      "properties": {
+        "samples": {
+          "type": "array",
+          "minItems": 64,
+          "maxItems": 64,
+          "items": { "type": "number" }
+        }
+      }
+    },
+    "ease": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["linear", "inQuad", "outCubic", "inOutSine"]
+        },
+        { "$ref": "#/$defs/sampledEase" }
+      ]
+    },
+    "keyframe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t", "value"],
+      "properties": {
+        "t": { "type": "number", "minimum": 0, "maximum": 1 },
+        "value": { "$ref": "#/$defs/numberValue" },
+        "ease": { "$ref": "#/$defs/ease" }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["property", "keys"],
+      "properties": {
+        "property": {
+          "type": "string",
+          "enum": ["radius", "opacity", "sweepAngle"]
+        },
+        "keys": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/keyframe" }
+        }
+      }
+    },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/track" }
+    },
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["color", "blend"],
+      "properties": {
+        "color": { "$ref": "#/$defs/colorValue" },
+        "blend": { "type": "string", "enum": ["normal", "additive"] }
+      }
+    },
+    "ringGeometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["thickness"],
+      "properties": {
+        "thickness": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "waveGeometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["thickness", "softness"],
+      "properties": {
+        "thickness": { "type": "number", "exclusiveMinimum": 0 },
+        "softness": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "slashArcGeometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["thickness", "startAngle", "sweepAngle"],
+      "properties": {
+        "thickness": { "type": "number", "exclusiveMinimum": 0 },
+        "startAngle": { "type": "number", "minimum": 0, "maximum": 360 },
+        "sweepAngle": { "type": "number", "exclusiveMinimum": 0, "maximum": 360 },
+        "tipRatio": { "type": "number", "minimum": 0, "maximum": 0.5 }
+      }
+    },
+    "shardGeometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "size", "spread", "lift", "gravity"],
+      "properties": {
+        "count": { "type": "integer", "minimum": 1, "maximum": 128 },
+        "size": { "type": "number", "exclusiveMinimum": 0 },
+        "spread": { "type": "number", "minimum": 0, "maximum": 1 },
+        "lift": { "type": "number", "minimum": 0 },
+        "gravity": { "type": "number", "minimum": 0 }
+      }
+    },
+    "projectileGeometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shape",
+        "directionAngle",
+        "size",
+        "travel",
+        "arcHeight",
+        "trailLength"
+      ],
+      "properties": {
+        "shape": { "type": "string", "enum": ["orb", "dart", "bomb"] },
+        "directionAngle": { "type": "number", "minimum": -180, "maximum": 180 },
+        "size": { "type": "number", "exclusiveMinimum": 0 },
+        "travel": { "type": "number", "exclusiveMinimum": 0 },
+        "arcHeight": { "type": "number", "minimum": 0 },
+        "trailLength": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "ringLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "startAt",
+        "duration",
+        "geometry",
+        "material",
+        "tracks"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "const": "ring" },
+        "startAt": { "type": "number", "minimum": 0 },
+        "duration": { "type": "number", "exclusiveMinimum": 0 },
+        "geometry": { "$ref": "#/$defs/ringGeometry" },
+        "material": { "$ref": "#/$defs/material" },
+        "tracks": { "$ref": "#/$defs/tracks" }
+      }
+    },
+    "waveLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "startAt",
+        "duration",
+        "geometry",
+        "material",
+        "tracks"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "const": "wave" },
+        "startAt": { "type": "number", "minimum": 0 },
+        "duration": { "type": "number", "exclusiveMinimum": 0 },
+        "geometry": { "$ref": "#/$defs/waveGeometry" },
+        "material": { "$ref": "#/$defs/material" },
+        "tracks": { "$ref": "#/$defs/tracks" }
+      }
+    },
+    "slashArcLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "startAt",
+        "duration",
+        "geometry",
+        "material",
+        "tracks"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "const": "slashArc" },
+        "startAt": { "type": "number", "minimum": 0 },
+        "duration": { "type": "number", "exclusiveMinimum": 0 },
+        "geometry": { "$ref": "#/$defs/slashArcGeometry" },
+        "material": { "$ref": "#/$defs/material" },
+        "tracks": { "$ref": "#/$defs/tracks" }
+      }
+    },
+    "shardLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "startAt",
+        "duration",
+        "geometry",
+        "material",
+        "tracks"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "const": "shards" },
+        "startAt": { "type": "number", "minimum": 0 },
+        "duration": { "type": "number", "exclusiveMinimum": 0 },
+        "geometry": { "$ref": "#/$defs/shardGeometry" },
+        "material": { "$ref": "#/$defs/material" },
+        "tracks": { "$ref": "#/$defs/tracks" }
+      }
+    },
+    "projectileLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "startAt",
+        "duration",
+        "geometry",
+        "material",
+        "tracks"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "const": "projectile" },
+        "startAt": { "type": "number", "minimum": 0 },
+        "duration": { "type": "number", "exclusiveMinimum": 0 },
+        "geometry": { "$ref": "#/$defs/projectileGeometry" },
+        "material": { "$ref": "#/$defs/material" },
+        "tracks": { "$ref": "#/$defs/tracks" }
+      }
+    },
+    "effectLayer": {
+      "oneOf": [
+        { "$ref": "#/$defs/ringLayer" },
+        { "$ref": "#/$defs/waveLayer" },
+        { "$ref": "#/$defs/slashArcLayer" },
+        { "$ref": "#/$defs/shardLayer" },
+        { "$ref": "#/$defs/projectileLayer" }
+      ]
+    }
+  }
+}

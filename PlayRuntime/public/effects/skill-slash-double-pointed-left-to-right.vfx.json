@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "id": "skill.slash-double-pointed-left-to-right",
+  "duration": 0.56,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 2.4,
+      "min": 1.2,
+      "max": 3.2
+    },
+    "color": {
+      "type": "color",
+      "default": "#78ECFF"
+    }
+  },
+  "layers": [
+    {
+      "id": "arc-glow",
+      "type": "slashArc",
+      "startAt": 0,
+      "duration": 0.56,
+      "geometry": {
+        "thickness": 0.3,
+        "startAngle": 205,
+        "sweepAngle": 150,
+        "tipRatio": 0.12
+      },
+      "material": {
+        "color": "#398FFF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "sweepAngle",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.72, "value": 150, "ease": "linear" },
+            { "t": 1, "value": 150 }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.8 },
+            { "t": 0.72, "value": 0.8 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arc-core",
+      "type": "slashArc",
+      "startAt": 0,
+      "duration": 0.56,
+      "geometry": {
+        "thickness": 0.095,
+        "startAngle": 205,
+        "sweepAngle": 150,
+        "tipRatio": 0.12
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "sweepAngle",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.72, "value": 150, "ease": "linear" },
+            { "t": 1, "value": 150 }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 1 },
+            { "t": 0.72, "value": 1 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    }
+  ]
+}

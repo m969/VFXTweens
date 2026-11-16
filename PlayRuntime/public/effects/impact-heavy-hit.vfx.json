@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "id": "impact.heavy-hit",
+  "duration": 0.95,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 2.5,
+      "min": 1,
+      "max": 3.8
+    },
+    "color": {
+      "type": "color",
+      "default": "#FF985B"
+    }
+  },
+  "layers": [
+    {
+      "id": "heavy-sparks",
+      "type": "shards",
+      "startAt": 0,
+      "duration": 0.95,
+      "geometry": {
+        "count": 30,
+        "size": 0.16,
+        "spread": 0.82,
+        "lift": 3.2,
+        "gravity": 6.7
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.08
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ground-shockwave",
+      "type": "wave",
+      "startAt": 0.04,
+      "duration": 0.58,
+      "geometry": {
+        "thickness": 0.36,
+        "softness": 0.88
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.16
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.75
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

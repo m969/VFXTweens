@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "id": "projectile.six-lane",
+  "duration": 1,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 1,
+      "min": 0.2,
+      "max": 3
+    },
+    "color": {
+      "type": "color",
+      "default": "#d78aff"
+    }
+  },
+  "layers": [
+    {
+      "id": "six-lane-1",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 1,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": -42,
+        "size": 0.105,
+        "travel": 4.2,
+        "arcHeight": 0.3,
+        "trailLength": 0.82
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.78 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.84, "value": 0.88 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "six-lane-2",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 1,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": -25,
+        "size": 0.105,
+        "travel": 4.2,
+        "arcHeight": 0.3,
+        "trailLength": 0.82
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.78 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.84, "value": 0.88 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "six-lane-3",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 1,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": -9,
+        "size": 0.105,
+        "travel": 4.2,
+        "arcHeight": 0.3,
+        "trailLength": 0.82
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.78 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.84, "value": 0.88 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "six-lane-4",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 1,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": 9,
+        "size": 0.105,
+        "travel": 4.2,
+        "arcHeight": 0.3,
+        "trailLength": 0.82
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.78 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.84, "value": 0.88 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "six-lane-5",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 1,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": 25,
+        "size": 0.105,
+        "travel": 4.2,
+        "arcHeight": 0.3,
+        "trailLength": 0.82
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.78 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.84, "value": 0.88 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "six-lane-6",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 1,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": 42,
+        "size": 0.105,
+        "travel": 4.2,
+        "arcHeight": 0.3,
+        "trailLength": 0.82
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.78 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.84, "value": 0.88 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    }
+  ]
+}

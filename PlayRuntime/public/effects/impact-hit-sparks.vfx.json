@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "impact.hit-sparks",
+  "duration": 0.42,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 1.35,
+      "min": 0.6,
+      "max": 2.2
+    },
+    "color": {
+      "type": "color",
+      "default": "#FFC85A"
+    }
+  },
+  "layers": [
+    {
+      "id": "impact-sparks",
+      "type": "shards",
+      "startAt": 0,
+      "duration": 0.42,
+      "geometry": {
+        "count": 22,
+        "size": 0.06,
+        "spread": 0.96,
+        "lift": 7.2,
+        "gravity": 14
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.04
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

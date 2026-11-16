@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "character.hit-sparks",
+  "duration": 0.48,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 0.95,
+      "min": 0.5,
+      "max": 1.8
+    },
+    "color": {
+      "type": "color",
+      "default": "#FFD166"
+    }
+  },
+  "layers": [
+    {
+      "id": "character-contact-sparks",
+      "type": "shards",
+      "startAt": 0,
+      "duration": 0.48,
+      "geometry": {
+        "count": 22,
+        "size": 0.065,
+        "spread": 0.9,
+        "lift": 1.5,
+        "gravity": 0.25
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.04
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

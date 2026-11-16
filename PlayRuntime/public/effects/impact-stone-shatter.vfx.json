@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "impact.stone-shatter",
+  "duration": 1,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 3.2,
+      "min": 1,
+      "max": 4.4
+    },
+    "color": {
+      "type": "color",
+      "default": "#D88A4A"
+    }
+  },
+  "layers": [
+    {
+      "id": "stone-debris",
+      "type": "shards",
+      "startAt": 0,
+      "duration": 1,
+      "geometry": {
+        "count": 34,
+        "size": 0.23,
+        "spread": 0.78,
+        "lift": 3.4,
+        "gravity": 6.5
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "normal"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.06
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

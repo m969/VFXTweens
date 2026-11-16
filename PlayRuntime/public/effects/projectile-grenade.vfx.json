@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "projectile.grenade",
+  "duration": 1.05,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 1,
+      "min": 0.2,
+      "max": 3
+    },
+    "color": {
+      "type": "color",
+      "default": "#ffb347"
+    }
+  },
+  "layers": [
+    {
+      "id": "grenade-flight",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 1.05,
+      "geometry": {
+        "shape": "bomb",
+        "directionAngle": 0,
+        "size": 0.2,
+        "travel": 3.9,
+        "arcHeight": 1.35,
+        "trailLength": 0.58
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.8
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.95
+            },
+            {
+              "t": 0.86,
+              "value": 0.9
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

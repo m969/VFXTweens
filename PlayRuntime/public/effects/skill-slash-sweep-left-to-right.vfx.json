@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "skill.slash-sweep-left-to-right",
+  "duration": 0.48,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 2.4,
+      "min": 1.2,
+      "max": 3.2
+    },
+    "color": {
+      "type": "color",
+      "default": "#74E9FF"
+    }
+  },
+  "layers": [
+    {
+      "id": "slash-sweep",
+      "type": "slashArc",
+      "startAt": 0,
+      "duration": 0.48,
+      "geometry": {
+        "thickness": 0.18,
+        "startAngle": 205,
+        "sweepAngle": 152
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "sweepAngle",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.72, "value": 152, "ease": "linear" },
+            { "t": 1, "value": 152 }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.72, "value": 0.95 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    }
+  ]
+}

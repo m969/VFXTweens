@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "skill.glass-shatter",
+  "duration": 1.05,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 3.6,
+      "min": 1,
+      "max": 4.8
+    },
+    "color": {
+      "type": "color",
+      "default": "#D3F6FF"
+    }
+  },
+  "layers": [
+    {
+      "id": "glass-fragments",
+      "type": "shards",
+      "startAt": 0,
+      "duration": 1.05,
+      "geometry": {
+        "count": 48,
+        "size": 0.14,
+        "spread": 1,
+        "lift": 3.7,
+        "gravity": 7
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "normal"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.03
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.95
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "id": "skill.charged-impact",
+  "duration": 1.1,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 3.2,
+      "min": 0.8,
+      "max": 4.2
+    },
+    "color": {
+      "type": "color",
+      "default": "#FFCB6B"
+    }
+  },
+  "layers": [
+    {
+      "id": "charge-halo",
+      "type": "ring",
+      "startAt": 0,
+      "duration": 0.38,
+      "geometry": {
+        "thickness": 0.07
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 4.5 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "inQuad" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.2 },
+            { "t": 1, "value": 0.72, "ease": "outCubic" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "release-ring",
+      "type": "ring",
+      "startAt": 0.34,
+      "duration": 0.52,
+      "geometry": {
+        "thickness": 0.12
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.12 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "release-arc",
+      "type": "slashArc",
+      "startAt": 0.38,
+      "duration": 0.46,
+      "geometry": {
+        "thickness": 0.17,
+        "startAngle": 205,
+        "sweepAngle": 245
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.35 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.85 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ground-wave",
+      "type": "wave",
+      "startAt": 0.44,
+      "duration": 0.66,
+      "geometry": {
+        "thickness": 0.48,
+        "softness": 0.92
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.08 },
+            { "t": 1, "value": { "param": "radius" }, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.72 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    }
+  ]
+}

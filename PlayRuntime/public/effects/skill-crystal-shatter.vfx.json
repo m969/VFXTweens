@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "id": "skill.crystal-shatter",
+  "duration": 1,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 3,
+      "min": 1,
+      "max": 4.4
+    },
+    "color": {
+      "type": "color",
+      "default": "#54DFFF"
+    }
+  },
+  "layers": [
+    {
+      "id": "cyan-crystals",
+      "type": "shards",
+      "startAt": 0,
+      "duration": 1,
+      "geometry": {
+        "count": 26,
+        "size": 0.2,
+        "spread": 0.92,
+        "lift": 4,
+        "gravity": 8
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.04
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "violet-crystals",
+      "type": "shards",
+      "startAt": 0.06,
+      "duration": 0.94,
+      "geometry": {
+        "count": 16,
+        "size": 0.13,
+        "spread": 0.82,
+        "lift": 3.4,
+        "gravity": 7
+      },
+      "material": {
+        "color": "#B779FF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.08
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.9
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "projectile.arcane-bolt",
+  "duration": 0.72,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 1,
+      "min": 0.2,
+      "max": 3
+    },
+    "color": {
+      "type": "color",
+      "default": "#72dcff"
+    }
+  },
+  "layers": [
+    {
+      "id": "arcane-bolt-flight",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 0.72,
+      "geometry": {
+        "shape": "dart",
+        "directionAngle": 0,
+        "size": 0.14,
+        "travel": 5.4,
+        "arcHeight": 0.12,
+        "trailLength": 1.35
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.85
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.95
+            },
+            {
+              "t": 0.84,
+              "value": 0.9
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

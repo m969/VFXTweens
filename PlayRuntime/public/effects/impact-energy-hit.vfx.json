@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "id": "impact.energy-hit",
+  "duration": 0.72,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 1.7,
+      "min": 0.8,
+      "max": 2.8
+    },
+    "color": {
+      "type": "color",
+      "default": "#61E8FF"
+    }
+  },
+  "layers": [
+    {
+      "id": "energy-flash",
+      "type": "ring",
+      "startAt": 0,
+      "duration": 0.25,
+      "geometry": {
+        "thickness": 0.1
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.12
+            },
+            {
+              "t": 1,
+              "value": 0.9,
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "energy-sparks",
+      "type": "shards",
+      "startAt": 0.02,
+      "duration": 0.7,
+      "geometry": {
+        "count": 28,
+        "size": 0.085,
+        "spread": 0.94,
+        "lift": 4.4,
+        "gravity": 12.2
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.04
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

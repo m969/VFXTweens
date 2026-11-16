@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="VFXTweens procedural Three.js effect preview"
+    />
+    <title>VFXTweens - Layered Impact</title>
+  </head>
+  <body>
+    <main id="app">
+      <aside id="effect-sidebar" class="effect-sidebar" aria-label="Effect library">
+        <header class="sidebar-header">
+          <a class="brand" href="/" aria-label="VFXTweens home">
+            <span class="brand-mark" aria-hidden="true">V</span>
+            <span>
+              <strong>VFXTweens</strong>
+              <small>Effect library</small>
+            </span>
+          </a>
+          <div class="sidebar-heading">
+            <h2>Templates</h2>
+            <output id="effect-count" aria-label="Template count">0</output>
+          </div>
+        </header>
+        <div class="sidebar-browser">
+          <section class="sidebar-panel category-panel" aria-labelledby="category-panel-title">
+            <h3 id="category-panel-title" class="sidebar-panel-title">分类</h3>
+            <nav
+              id="category-tabs"
+              class="category-tabs"
+              role="tablist"
+              aria-label="Effect categories"
+            ></nav>
+          </section>
+          <section class="sidebar-panel animation-panel" aria-labelledby="animation-panel-title">
+            <h3 id="animation-panel-title" class="sidebar-panel-title">动画</h3>
+            <nav
+              id="effect-list"
+              class="effect-list"
+              role="tabpanel"
+              aria-label="Effect templates"
+              tabindex="0"
+            ></nav>
+          </section>
+        </div>
+        <p class="sidebar-footer">Select a template to preview it.</p>
+      </aside>
+      <button
+        id="sidebar-backdrop"
+        class="sidebar-backdrop"
+        type="button"
+        aria-label="Close template list"
+        tabindex="-1"
+      ></button>
+      <button
+        id="sidebar-toggle"
+        class="sidebar-toggle"
+        type="button"
+        aria-label="Toggle template list"
+        aria-expanded="true"
+        aria-controls="effect-sidebar"
+      >
+        <span aria-hidden="true">☰</span>
+        <span>Templates</span>
+      </button>
+      <section class="toolbar" aria-label="Effect controls">
+        <div>
+          <p class="eyebrow">Previewing template</p>
+          <h1 id="effect-title">Layered Ground Impact</h1>
+        </div>
+        <div class="controls">
+          <div class="control-row">
+            <div id="parameter-controls" class="parameter-controls" role="group" aria-label="Template parameters"></div>
+            <button id="play-button" type="button">Play</button>
+          </div>
+          <div class="playback-controls" role="group" aria-label="Playback timeline">
+            <label for="timeline-input">Time</label>
+            <input id="timeline-input" type="range" min="0" max="1" step="0.001" value="0" disabled />
+            <output id="timeline-value" for="timeline-input">0.00 / 0.00 s</output>
+          </div>
+        </div>
+      </section>
+      <canvas id="preview" aria-label="Three.js effect preview"></canvas>
+      <section id="easing-preview" class="easing-preview" aria-label="Easing curve preview">
+        <header class="easing-preview-header">
+          <h2>Easing curves</h2>
+          <span>Read only</span>
+        </header>
+        <div id="easing-curves" class="easing-curves" aria-live="polite"></div>
+      </section>
+      <p class="hint">Drag to orbit · Scroll to zoom · Scrub the timeline to inspect</p>
+      <p id="error-message" class="error" role="alert" hidden></p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

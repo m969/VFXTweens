@@ -1,0 +1,143 @@
+{
+    "schemaVersion": 1,
+    "effects": [
+        {
+            "id": "impact.layered",
+            "name": "叠层地面冲击",
+            "category": "冲击",
+            "file": "impact-layered.vfx.json"
+        },
+        {
+            "id": "impact.ring",
+            "name": "冲击环",
+            "category": "冲击",
+            "file": "impact-ring.vfx.json"
+        },
+        {
+            "id": "skill.charged-impact",
+            "name": "蓄力地面爆发",
+            "category": "冲击",
+            "file": "skill-charged-impact.vfx.json"
+        },
+        {
+            "id": "impact.hit-sparks",
+            "name": "命中火花",
+            "category": "冲击",
+            "file": "impact-hit-sparks.vfx.json"
+        },
+        {
+            "id": "impact.energy-hit",
+            "name": "能量命中",
+            "category": "冲击",
+            "file": "impact-energy-hit.vfx.json"
+        },
+        {
+            "id": "impact.heavy-hit",
+            "name": "重击火花",
+            "category": "冲击",
+            "file": "impact-heavy-hit.vfx.json"
+        },
+        {
+            "id": "character.hit-sparks",
+            "name": "角色受击火花",
+            "category": "角色受击",
+            "file": "character-hit-sparks.vfx.json"
+        },
+        {
+            "id": "character.slash-hit",
+            "name": "角色斩击反馈",
+            "category": "角色受击",
+            "file": "character-slash-hit.vfx.json"
+        },
+        {
+            "id": "character.energy-hit",
+            "name": "角色能量命中",
+            "category": "角色受击",
+            "file": "character-energy-hit.vfx.json"
+        },
+        {
+            "id": "skill.wave-pulse",
+            "name": "波纹脉冲",
+            "category": "波纹",
+            "file": "skill-wave-pulse.vfx.json"
+        },
+        {
+            "id": "skill.slash-arc",
+            "name": "弧形斩击",
+            "category": "斩击",
+            "file": "skill-slash-arc.vfx.json"
+        },
+        {
+            "id": "skill.light-arc-slash",
+            "name": "光弧粒子斩击",
+            "category": "斩击",
+            "file": "skill-light-arc-slash.vfx.json"
+        },
+        {
+            "id": "skill.slash-sweep-left-to-right",
+            "name": "横向光弧斩击",
+            "category": "斩击",
+            "file": "skill-slash-sweep-left-to-right.vfx.json"
+        },
+        {
+            "id": "skill.slash-double-pointed",
+            "name": "双尖光弧斩击",
+            "category": "斩击",
+            "file": "skill-slash-double-pointed.vfx.json"
+        },
+        {
+            "id": "skill.slash-double-pointed-left-to-right",
+            "name": "双尖横向斩击",
+            "category": "斩击",
+            "file": "skill-slash-double-pointed-left-to-right.vfx.json"
+        },
+        {
+            "id": "impact.stone-shatter",
+            "name": "石块碎裂",
+            "category": "碎裂",
+            "file": "impact-stone-shatter.vfx.json"
+        },
+        {
+            "id": "skill.crystal-shatter",
+            "name": "奥术晶体爆发",
+            "category": "碎裂",
+            "file": "skill-crystal-shatter.vfx.json"
+        },
+        {
+            "id": "skill.glass-shatter",
+            "name": "玻璃碎裂",
+            "category": "碎裂",
+            "file": "skill-glass-shatter.vfx.json"
+        },
+        {
+            "id": "projectile.fireball",
+            "name": "飞火弹",
+            "category": "飞弹与投掷物",
+            "file": "projectile-fireball.vfx.json"
+        },
+        {
+            "id": "projectile.arcane-bolt",
+            "name": "奥术飞弹",
+            "category": "飞弹与投掷物",
+            "file": "projectile-arcane-bolt.vfx.json"
+        },
+        {
+            "id": "projectile.grenade",
+            "name": "手雷投掷",
+            "category": "飞弹与投掷物",
+            "file": "projectile-grenade.vfx.json"
+        },
+        {
+            "id": "projectile.three-lane",
+            "name": "三弹道齐射",
+            "category": "飞弹与投掷物",
+            "file": "projectile-three-lane.vfx.json"
+        },
+        {
+            "id": "projectile.six-lane",
+            "name": "六弹道齐射",
+            "category": "飞弹与投掷物",
+            "file": "projectile-six-lane.vfx.json"
+        }
+    ]
+}

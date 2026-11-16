@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "id": "character.energy-hit",
+  "duration": 0.68,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 1.35,
+      "min": 0.7,
+      "max": 2.1
+    },
+    "color": {
+      "type": "color",
+      "default": "#63E8FF"
+    }
+  },
+  "layers": [
+    {
+      "id": "energy-contact-flash",
+      "type": "ring",
+      "startAt": 0,
+      "duration": 0.22,
+      "geometry": {
+        "thickness": 0.1
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.08
+            },
+            {
+              "t": 1,
+              "value": 0.7,
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cyan-contact-sparks",
+      "type": "shards",
+      "startAt": 0.01,
+      "duration": 0.67,
+      "geometry": {
+        "count": 26,
+        "size": 0.065,
+        "spread": 0.94,
+        "lift": 1.9,
+        "gravity": 0.35
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.04
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 1
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "white-contact-sparks",
+      "type": "shards",
+      "startAt": 0.03,
+      "duration": 0.55,
+      "geometry": {
+        "count": 12,
+        "size": 0.04,
+        "spread": 0.72,
+        "lift": 2.2,
+        "gravity": 0.35
+      },
+      "material": {
+        "color": "#FFFFFF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.03
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.9
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

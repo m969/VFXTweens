@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "projectile.fireball",
+  "duration": 0.82,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 1,
+      "min": 0.2,
+      "max": 3
+    },
+    "color": {
+      "type": "color",
+      "default": "#ff6a24"
+    }
+  },
+  "layers": [
+    {
+      "id": "fireball-flight",
+      "type": "projectile",
+      "startAt": 0,
+      "duration": 0.82,
+      "geometry": {
+        "shape": "orb",
+        "directionAngle": 0,
+        "size": 0.2,
+        "travel": 4.8,
+        "arcHeight": 0.35,
+        "trailLength": 1.15
+      },
+      "material": {
+        "color": {
+          "param": "color"
+        },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.7
+            },
+            {
+              "t": 1,
+              "value": {
+                "param": "radius"
+              },
+              "ease": "outCubic"
+            }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            {
+              "t": 0,
+              "value": 0.95
+            },
+            {
+              "t": 0.76,
+              "value": 0.85
+            },
+            {
+              "t": 1,
+              "value": 0,
+              "ease": "inQuad"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
