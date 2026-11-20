@@ -120,7 +120,7 @@
       "properties": {
         "property": {
           "type": "string",
-          "enum": ["radius", "opacity", "sweepAngle"]
+          "enum": ["radius", "opacity", "sweepAngle", "reveal"]
         },
         "keys": {
           "type": "array",
@@ -168,6 +168,36 @@
         "thickness": { "type": "number", "exclusiveMinimum": 0 },
         "startAngle": { "type": "number", "minimum": 0, "maximum": 360 },
         "sweepAngle": { "type": "number", "exclusiveMinimum": 0, "maximum": 360 },
+        "tipRatio": { "type": "number", "minimum": 0, "maximum": 0.5 }
+      }
+    },
+    "slashRibbonPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" }
+      }
+    },
+    "slashRibbonPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "control1", "control2", "end"],
+      "properties": {
+        "start": { "$ref": "#/$defs/slashRibbonPoint" },
+        "control1": { "$ref": "#/$defs/slashRibbonPoint" },
+        "control2": { "$ref": "#/$defs/slashRibbonPoint" },
+        "end": { "$ref": "#/$defs/slashRibbonPoint" }
+      }
+    },
+    "slashRibbonGeometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "width", "tipRatio"],
+      "properties": {
+        "path": { "$ref": "#/$defs/slashRibbonPath" },
+        "width": { "type": "number", "exclusiveMinimum": 0 },
         "tipRatio": { "type": "number", "minimum": 0, "maximum": 0.5 }
       }
     },
@@ -269,6 +299,28 @@
         "tracks": { "$ref": "#/$defs/tracks" }
       }
     },
+    "slashRibbonLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "startAt",
+        "duration",
+        "geometry",
+        "material",
+        "tracks"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "const": "slashRibbon" },
+        "startAt": { "type": "number", "minimum": 0 },
+        "duration": { "type": "number", "exclusiveMinimum": 0 },
+        "geometry": { "$ref": "#/$defs/slashRibbonGeometry" },
+        "material": { "$ref": "#/$defs/material" },
+        "tracks": { "$ref": "#/$defs/tracks" }
+      }
+    },
     "shardLayer": {
       "type": "object",
       "additionalProperties": false,
@@ -318,6 +370,7 @@
         { "$ref": "#/$defs/ringLayer" },
         { "$ref": "#/$defs/waveLayer" },
         { "$ref": "#/$defs/slashArcLayer" },
+        { "$ref": "#/$defs/slashRibbonLayer" },
         { "$ref": "#/$defs/shardLayer" },
         { "$ref": "#/$defs/projectileLayer" }
       ]

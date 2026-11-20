@@ -6,6 +6,7 @@ import type {
   EffectLayerDefinition,
   ProjectileLayerDefinition,
   ResolvedParameters,
+  SlashRibbonLayerDefinition,
   ShardLayerDefinition,
   TrackDefinition
 } from "./types";
@@ -26,6 +27,15 @@ interface SurfaceLayerInstance {
   radiusTrack: TrackDefinition;
   opacityTrack: TrackDefinition;
   sweepAngleTrack?: TrackDefinition;
+}
+
+interface SlashRibbonLayerInstance {
+  kind: "slashRibbon";
+  definition: SlashRibbonLayerDefinition;
+  mesh: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
+  radiusTrack: TrackDefinition;
+  opacityTrack: TrackDefinition;
+  revealTrack: TrackDefinition;
 }
 
 interface ShardSeed {
@@ -70,6 +80,7 @@ interface ProjectileLayerInstance {
 
 type EffectLayerInstance =
   | SurfaceLayerInstance
+  | SlashRibbonLayerInstance
   | ShardLayerInstance
   | ProjectileLayerInstance;
 
@@ -140,6 +151,48 @@ const ringFragmentShader = `
       alpha = outerEdge * uOpacity;
     }
 
+    if (alpha <= 0.001) {
+      discard;
+    }
+
+    gl_FragColor = vec4(uColor, alpha);
+    #include <tonemapping_fragment>
+    #include <colorspace_fragment>
+  }
+`;
+
+const slashRibbonVertexShader = `
+  attribute float aProgress;
+  attribute float aAcross;
+  varying float vProgress;
+  varying float vAcross;
+
+  void main() {
+    vProgress = aProgress;
+    vAcross = aAcross;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const slashRibbonFragmentShader = `
+  uniform float uOpacity;
+  uniform float uReveal;
+  uniform vec3 uColor;
+  varying float vProgress;
+  varying float vAcross;
+
+  void main() {
+    if (uReveal <= 0.0 || vProgress > uReveal) {
+      discard;
+    }
+
+    float edgeAlpha = 1.0 - smoothstep(0.72, 1.0, abs(vAcross));
+    float headAlpha = 1.0 - smoothstep(
+      max(uReveal - 0.045, 0.0),
+      uReveal,
+      vProgress
+    );
+    float alpha = edgeAlpha * headAlpha * uOpacity;
     if (alpha <= 0.001) {
       discard;
     }
@@ -256,6 +309,139 @@ function createSurfaceLayer(
       layer.type === "slashArc"
         ? layer.tracks.find((track) => track.property === "sweepAngle")
         : undefined
+  };
+}
+
+function evaluateSlashRibbonPoint(
+  path: SlashRibbonLayerDefinition["geometry"]["path"],
+  progress: number
+): THREE.Vector2 {
+  const inverse = 1 - progress;
+  const startWeight = inverse * inverse * inverse;
+  const control1Weight = 3 * inverse * inverse * progress;
+  const control2Weight = 3 * inverse * progress * progress;
+  const endWeight = progress * progress * progress;
+  return new THREE.Vector2(
+    startWeight * path.start.x +
+      control1Weight * path.control1.x +
+      control2Weight * path.control2.x +
+      endWeight * path.end.x,
+    startWeight * path.start.y +
+      control1Weight * path.control1.y +
+      control2Weight * path.control2.y +
+      endWeight * path.end.y
+  );
+}
+
+function createSlashRibbonLayer(
+  layer: SlashRibbonLayerDefinition,
+  params: ResolvedParameters
+): SlashRibbonLayerInstance {
+  const radiusTrack = getRequiredTrack(layer, "radius");
+  const opacityTrack = getRequiredTrack(layer, "opacity");
+  const revealTrack = getRequiredTrack(layer, "reveal");
+  const segmentCount = 96;
+  const sampledPoints = Array.from({ length: segmentCount + 1 }, (_, index) =>
+    evaluateSlashRibbonPoint(
+      layer.geometry.path,
+      index / segmentCount
+    )
+  );
+  const positions = new Float32Array((segmentCount + 1) * 2 * 3);
+  const progresses = new Float32Array((segmentCount + 1) * 2);
+  const acrossValues = new Float32Array((segmentCount + 1) * 2);
+  const indices: number[] = [];
+
+  for (let index = 0; index <= segmentCount; index += 1) {
+    const previous = sampledPoints[Math.max(index - 1, 0)];
+    const next = sampledPoints[Math.min(index + 1, segmentCount)];
+    const center = sampledPoints[index];
+    if (!previous || !next || !center) {
+      throw new Error(`Slash ribbon layer "${layer.id}" has incomplete path samples.`);
+    }
+
+    const tangent = next.clone().sub(previous);
+    if (tangent.lengthSq() <= 1e-12) {
+      throw new Error(
+        `Slash ribbon layer "${layer.id}" has a path with no usable tangent.`
+      );
+    }
+    tangent.normalize();
+    const perpendicularX = -tangent.y;
+    const perpendicularY = tangent.x;
+    const progress = index / segmentCount;
+    const distanceToTip = Math.min(progress, 1 - progress);
+    const taperProgress =
+      layer.geometry.tipRatio === 0
+        ? 1
+        : THREE.MathUtils.clamp(
+            distanceToTip / layer.geometry.tipRatio,
+            0,
+            1
+          );
+    const taper = taperProgress * taperProgress * (3 - 2 * taperProgress);
+    const halfWidth = layer.geometry.width * taper * 0.5;
+    const vertexOffset = index * 6;
+    const attributeOffset = index * 2;
+
+    positions[vertexOffset] = center.x + perpendicularX * halfWidth;
+    positions[vertexOffset + 1] = center.y + perpendicularY * halfWidth;
+    positions[vertexOffset + 2] = 0;
+    positions[vertexOffset + 3] = center.x - perpendicularX * halfWidth;
+    positions[vertexOffset + 4] = center.y - perpendicularY * halfWidth;
+    positions[vertexOffset + 5] = 0;
+    progresses[attributeOffset] = progress;
+    progresses[attributeOffset + 1] = progress;
+    acrossValues[attributeOffset] = 1;
+    acrossValues[attributeOffset + 1] = -1;
+
+    if (index < segmentCount) {
+      const currentVertex = index * 2;
+      indices.push(
+        currentVertex,
+        currentVertex + 1,
+        currentVertex + 2,
+        currentVertex + 1,
+        currentVertex + 3,
+        currentVertex + 2
+      );
+    }
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute("aProgress", new THREE.Float32BufferAttribute(progresses, 1));
+  geometry.setAttribute("aAcross", new THREE.Float32BufferAttribute(acrossValues, 1));
+  geometry.setIndex(indices);
+  geometry.computeBoundingSphere();
+
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      uOpacity: { value: 0 },
+      uReveal: { value: 0 },
+      uColor: {
+        value: new THREE.Color(resolveColorValue(layer.material.color, params))
+      }
+    },
+    vertexShader: slashRibbonVertexShader,
+    fragmentShader: slashRibbonFragmentShader,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    blending:
+      layer.material.blend === "additive"
+        ? THREE.AdditiveBlending
+        : THREE.NormalBlending
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+
+  return {
+    kind: "slashRibbon",
+    definition: layer,
+    mesh,
+    radiusTrack,
+    opacityTrack,
+    revealTrack
   };
 }
 
@@ -424,6 +610,9 @@ function createLayer(
   layer: EffectLayerDefinition,
   params: ResolvedParameters
 ): EffectLayerInstance {
+  if (layer.type === "slashRibbon") {
+    return createSlashRibbonLayer(layer, params);
+  }
   if (layer.type === "shards") {
     return createShardLayer(layer, params);
   }
@@ -520,7 +709,15 @@ export class EffectInstance {
         progress,
         this.params
       );
-      if (layer.kind === "shards") {
+      if (layer.kind === "slashRibbon") {
+        layer.mesh.scale.setScalar(radius);
+        layer.mesh.material.uniforms.uOpacity.value = opacity;
+        layer.mesh.material.uniforms.uReveal.value = evaluateTrack(
+          layer.revealTrack,
+          progress,
+          this.params
+        );
+      } else if (layer.kind === "shards") {
         for (let index = 0; index < layer.seeds.length; index += 1) {
           const seed = layer.seeds[index];
           const angle = seed.angle;

@@ -160,7 +160,9 @@ function validateTrack(
     }
 
     const bounds =
-      track.property === "opacity" ? { min: 0, max: 1 } : { min: 0 };
+      track.property === "opacity" || track.property === "reveal"
+        ? { min: 0, max: 1 }
+        : { min: 0 };
     validateNumericValue(
       key.value,
       definition,
@@ -192,6 +194,25 @@ function validateLayer(
       `Slash arc layer "${layer.id}" angles must be in range: startAngle 0..360, sweepAngle (0..360].`
     );
   }
+  if (layer.type === "slashRibbon") {
+    const points = [
+      layer.geometry.path.start,
+      layer.geometry.path.control1,
+      layer.geometry.path.control2,
+      layer.geometry.path.end
+    ];
+    const firstPoint = points[0];
+    if (
+      points.every(
+        (point) =>
+          point.x === firstPoint.x && point.y === firstPoint.y
+      )
+    ) {
+      throw new Error(
+        `Slash ribbon layer "${layer.id}" path must contain more than one point.`
+      );
+    }
+  }
   const sweepAngleTrack = layer.tracks.find(
     (track) => track.property === "sweepAngle"
   );
@@ -208,6 +229,30 @@ function validateLayer(
         `Layer "${layer.id}" sweepAngle track key at t=${key.t}`,
         0,
         layer.geometry.sweepAngle
+      );
+    }
+  }
+  const revealTrack = layer.tracks.find(
+    (track) => track.property === "reveal"
+  );
+  if (revealTrack && layer.type !== "slashRibbon") {
+    throw new Error(
+      `Layer "${layer.id}" has a reveal track, but only slashRibbon layers support it.`
+    );
+  }
+  if (layer.type === "slashRibbon") {
+    if (!revealTrack) {
+      throw new Error(
+        `Slash ribbon layer "${layer.id}" requires a reveal track.`
+      );
+    }
+    for (const key of revealTrack.keys) {
+      validateNumericValue(
+        key.value,
+        definition,
+        `Layer "${layer.id}" reveal track key at t=${key.t}`,
+        0,
+        1
       );
     }
   }

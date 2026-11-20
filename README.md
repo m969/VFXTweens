@@ -25,10 +25,10 @@
 - 角色受击样例：`character-hit-sparks.vfx.json`、`character-slash-hit.vfx.json`、`character-energy-hit.vfx.json`；预览时在胸口高度沿角色表面法线展示，不包含人形模型。
 - 碎片粒子样例：`impact-stone-shatter.vfx.json`、`skill-crystal-shatter.vfx.json`、`skill-glass-shatter.vfx.json`
 - 飞弹与投掷物样例：`projectile-fireball.vfx.json`、`projectile-arcane-bolt.vfx.json`、`projectile-grenade.vfx.json`、`projectile-three-lane.vfx.json`、`projectile-six-lane.vfx.json`
-- 独立波纹与斩击样例：`skill-wave-pulse.vfx.json`、`skill-slash-arc.vfx.json`、`skill-light-arc-slash.vfx.json`、`skill-slash-sweep-left-to-right.vfx.json`、`skill-slash-double-pointed.vfx.json`、`skill-slash-double-pointed-left-to-right.vfx.json`；横向光弧使用单条弧线的角度遮罩连续展开，双尖光弧可分别调整两个端头的收尖比例；双尖横向样例固定半径，仅从左向右显现
+- 独立波纹与斩击样例：`skill-wave-pulse.vfx.json`、`skill-slash-arc.vfx.json`、`skill-light-arc-slash.vfx.json`、`skill-slash-rising-crescent.vfx.json`、`skill-slash-sweep-left-to-right.vfx.json`、`skill-slash-double-pointed.vfx.json`、`skill-slash-double-pointed-left-to-right.vfx.json`；上挑弯月样例用多条错位的三次贝塞尔光带叠出辉光、核心和细光痕，横向光弧使用单条弧线的角度遮罩连续展开，双尖光弧可分别调整两个端头的收尖比例；双尖横向样例固定半径，仅从左向右显现
 - Three.js runtime 和 npm 依赖均位于 `PlayRuntime/`。
 - 预览页：从左侧栏选择效果模板，调整半径与颜色，支持重播、轨道旋转和缩放；窄屏下列表收纳为可展开抽屉。
-- JSON 格式、Three.js runtime 和 Unity 导出器支持 `ring`、`wave`、`slashArc`、`shards`、`projectile` 五种可组合图层。`shards` 使用实例化四面体表现碎片，按表面法线抛起并受重力影响；`projectile` 可沿表面切线按抛物线路径飞行，并带有弹体与尾迹。
+- JSON 格式和 Three.js runtime 支持 `ring`、`wave`、`slashArc`、`slashRibbon`、`shards`、`projectile` 六种可组合图层；Unity 导出器目前支持除 `slashRibbon` 外的五种图层。`slashRibbon` 沿三次贝塞尔路径生成可收尖光带；`shards` 使用实例化四面体表现碎片，按表面法线抛起并受重力影响；`projectile` 可沿表面切线按抛物线路径飞行，并带有弹体与尾迹。
 
 根目录已初始化为 Unity 工程，版本为 Unity 2022.3.62f2，使用 URP 14.0.12。Three.js runtime 独立放在 `PlayRuntime/`。
 
@@ -90,7 +90,7 @@ Unity 工具负责生产符合格式的模板数据；特效几何、材质和�
 1. **模板定义**：模板 ID、默认参数、图层、持续时间和表面空间设置。
 2. **缓动函数**：内置 easing 函数，以及自定义曲线的导出格式。
 3. **时间轨道**：按绝对播放时间求值，支持每层延迟、时长和关键帧。
-4. **几何图层**：支持 `ring` 冲击环、`wave` 柔边扩张环、`slashArc` 固定圆弧、`shards` 碎片粒子和 `projectile` 飞弹轨迹；飞弹可从同一发射点按不同方向角组成齐射。
+4. **几何图层**：支持 `ring` 冲击环、`wave` 柔边扩张环、`slashArc` 固定圆弧、`slashRibbon` 曲线路径光带、`shards` 碎片粒子和 `projectile` 飞弹轨迹；飞弹可从同一发射点按不同方向角组成齐射。
 5. **运行时管理**：播放、停止和更新活动特效。
 6. **预览页**：加载导出的 JSON，在 Three.js 中播放并调整实例参数。
 
@@ -174,6 +174,24 @@ Unity 工具负责生产符合格式的模板数据；特效几何、材质和�
 }
 ```
 
+`slashRibbon` 沿 `path` 的三次贝塞尔曲线生成带状网格。路径坐标和 `width` 相对于图层半径缩放；`tipRatio`（`0..0.5`）控制光带首尾的收尖长度。
+
+```json
+{
+  "type": "slashRibbon",
+  "geometry": {
+    "path": {
+      "start": { "x": -0.95, "y": -0.48 },
+      "control1": { "x": -0.1, "y": -0.65 },
+      "control2": { "x": 1.03, "y": -0.15 },
+      "end": { "x": 0.72, "y": 0.92 }
+    },
+    "width": 0.22,
+    "tipRatio": 0.18
+  }
+}
+```
+
 ### 格式约定
 
 - `duration` 和 `startAt` 使用秒；关键帧 `t` 是该轨道局部的归一化时间，范围为 `0` 到 `1`。
@@ -181,6 +199,7 @@ Unity 工具负责生产符合格式的模板数据；特效几何、材质和�
 - `{ "param": "radius" }` 表示引用实例参数，不在 JSON 中执行任意代码。
 - `property` 必须由对应图层类型声明支持，避免依赖脆弱的任意对象属性路径。
 - `slashArc` 图层可用 `sweepAngle` 轨道按角度（度）连续揭示弧线，取值范围为 `0..geometry.sweepAngle`；未提供该轨道时使用完整几何弧线。
+- `slashRibbon` 图层必须提供 `reveal` 轨道，取值范围为 `0..1`，用于沿贝塞尔路径逐步显现光带。
 - 缓动可使用稳定的内置 ID，也可使用 64 个均匀采样值表示自定义曲线。采样覆盖归一化时间 `[0, 1]`，首尾值必须为 `0` 和 `1`；runtime 在线性插值采样值。Unity 导出器按此格式序列化 `AnimationCurve`。
 - `space: "surface"` 的实例由调用方提供位置和表面法线；坐标单位使用 Three.js 世界单位。
 
@@ -212,7 +231,7 @@ API 仅为讨论草案。模板定义与特效实例应分开：定义描述可�
 - 特效生命周期可由运行时控制，且停止后能释放或复用相关资源。
 - Unity 导出数据由格式校验；无法识别的 `schemaVersion` 或字段应明确报错。
 
-当前实现覆盖 JSON 校验、内置与采样缓动求值、五种 Three.js 效果图层、重播和资源释放。预览页从 `catalog.json` 读取模板列表，选中的模板单独播放；Unity 导出器按效果 ID 分别写入 JSON，并更新目录文件。
+当前实现覆盖 JSON 校验、内置与采样缓动求值、六种 Three.js 效果图层、重播和资源释放。预览页从 `catalog.json` 读取模板列表，选中的模板单独播放；Unity 导出器按效果 ID 分别写入 JSON，并更新目录文件。
 
 ## 参数面板、时间轴与缓动曲线
 
@@ -230,6 +249,7 @@ API 仅为讨论草案。模板定义与特效实例应分开：定义描述可�
 
 - `Assets/VFXTweens/ImpactRing.asset` 保留为旧版单环资产；可用它继续编辑和导出单图层环。
 - `Assets/VFXTweens/LayeredImpact.asset` 是组合示例。在 Inspector 的 `Layers` 列表中可添加/删除图层、选择 `Ring`、`Wave` 或 `Slash Arc`，并分别编辑延迟、时长、曲线和几何参数；`Slash Arc` 可启用 `Animate Sweep Angle` 配置逐步显现。
+- Unity 编辑器当前尚不支持 `slashRibbon` 图层；上挑弯月斩击样例直接由 `PlayRuntime` 中的 JSON 定义。
 - `Assets/VFXTweens/ChargedGroundBurst.asset` 展示蓄力光环收缩后，冲击环、弧形斩击与地面波纹依次释放。
 - 可运行 `Tools > VFXTweens > Create and Export Wave Pulse Example` 与 `Tools > VFXTweens > Create and Export Slash Arc Example`，创建独立波纹和弧形斩击模板。
 - 可运行 `Tools > VFXTweens > Create and Export Charged Ground Burst Example`，创建并导出蓄力地面冲击模板。

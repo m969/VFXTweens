@@ -15,6 +15,7 @@ function reloadAfterEffectExport(): Plugin {
         "skill-wave-pulse.vfx.json",
         "skill-slash-arc.vfx.json",
         "skill-light-arc-slash.vfx.json",
+        "skill-slash-rising-crescent.vfx.json",
         "skill-slash-sweep-left-to-right.vfx.json",
         "projectile-fireball.vfx.json",
         "projectile-arcane-bolt.vfx.json",

@@ -36,7 +36,7 @@ export interface KeyframeDefinition {
 }
 
 export interface TrackDefinition {
-  property: "radius" | "opacity" | "sweepAngle";
+  property: "radius" | "opacity" | "sweepAngle" | "reveal";
   keys: KeyframeDefinition[];
 }
 
@@ -76,6 +76,25 @@ export interface SlashArcLayerDefinition extends EffectLayerBase {
   };
 }
 
+export interface SlashRibbonPoint {
+  x: number;
+  y: number;
+}
+
+export interface SlashRibbonLayerDefinition extends EffectLayerBase {
+  type: "slashRibbon";
+  geometry: {
+    path: {
+      start: SlashRibbonPoint;
+      control1: SlashRibbonPoint;
+      control2: SlashRibbonPoint;
+      end: SlashRibbonPoint;
+    };
+    width: number;
+    tipRatio: number;
+  };
+}
+
 /** 碎片图层：按表面法线方向抛起碎片，并沿局部平面向外散射。 */
 export interface ShardLayerDefinition extends EffectLayerBase {
   type: "shards";
@@ -105,6 +124,7 @@ export type EffectLayerDefinition =
   | RingLayerDefinition
   | WaveLayerDefinition
   | SlashArcLayerDefinition
+  | SlashRibbonLayerDefinition
   | ShardLayerDefinition
   | ProjectileLayerDefinition;
 

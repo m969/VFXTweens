@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "id": "skill.slash-rising-crescent",
+  "duration": 0.62,
+  "space": "surface",
+  "params": {
+    "radius": {
+      "type": "number",
+      "default": 2.4,
+      "min": 1.2,
+      "max": 3.2
+    },
+    "color": {
+      "type": "color",
+      "default": "#B9F7FF"
+    }
+  },
+  "layers": [
+    {
+      "id": "slash-glow",
+      "type": "slashRibbon",
+      "startAt": 0,
+      "duration": 0.62,
+      "geometry": {
+        "path": {
+          "start": { "x": -0.95, "y": -0.48 },
+          "control1": { "x": -0.1, "y": -0.65 },
+          "control2": { "x": 1.03, "y": -0.15 },
+          "end": { "x": 0.72, "y": 0.92 }
+        },
+        "width": 0.22,
+        "tipRatio": 0.18
+      },
+      "material": {
+        "color": "#207EFF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.82 },
+            { "t": 0.72, "value": 0.82 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        },
+        {
+          "property": "reveal",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.72, "value": 1, "ease": "outCubic" },
+            { "t": 1, "value": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slash-ribbon",
+      "type": "slashRibbon",
+      "startAt": 0.012,
+      "duration": 0.54,
+      "geometry": {
+        "path": {
+          "start": { "x": -0.95, "y": -0.48 },
+          "control1": { "x": -0.1, "y": -0.65 },
+          "control2": { "x": 1.03, "y": -0.15 },
+          "end": { "x": 0.72, "y": 0.92 }
+        },
+        "width": 0.105,
+        "tipRatio": 0.2
+      },
+      "material": {
+        "color": "#48C9FF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.95 },
+            { "t": 0.78, "value": 0.95 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        },
+        {
+          "property": "reveal",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.72, "value": 1, "ease": "outCubic" },
+            { "t": 1, "value": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slash-core",
+      "type": "slashRibbon",
+      "startAt": 0.025,
+      "duration": 0.44,
+      "geometry": {
+        "path": {
+          "start": { "x": -0.95, "y": -0.48 },
+          "control1": { "x": -0.1, "y": -0.65 },
+          "control2": { "x": 1.03, "y": -0.15 },
+          "end": { "x": 0.72, "y": 0.92 }
+        },
+        "width": 0.038,
+        "tipRatio": 0.22
+      },
+      "material": {
+        "color": { "param": "color" },
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 1 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        },
+        {
+          "property": "reveal",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.78, "value": 1, "ease": "outCubic" },
+            { "t": 1, "value": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slash-outer-trail",
+      "type": "slashRibbon",
+      "startAt": 0.008,
+      "duration": 0.59,
+      "geometry": {
+        "path": {
+          "start": { "x": -1.03, "y": -0.56 },
+          "control1": { "x": -0.18, "y": -0.88 },
+          "control2": { "x": 1.22, "y": -0.34 },
+          "end": { "x": 0.95, "y": 0.83 }
+        },
+        "width": 0.105,
+        "tipRatio": 0.28
+      },
+      "material": {
+        "color": "#195FEA",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.5 },
+            { "t": 0.72, "value": 0.5 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        },
+        {
+          "property": "reveal",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.74, "value": 1, "ease": "outCubic" },
+            { "t": 1, "value": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slash-inner-filament",
+      "type": "slashRibbon",
+      "startAt": 0.02,
+      "duration": 0.49,
+      "geometry": {
+        "path": {
+          "start": { "x": -0.78, "y": -0.32 },
+          "control1": { "x": -0.04, "y": -0.48 },
+          "control2": { "x": 0.83, "y": -0.06 },
+          "end": { "x": 0.61, "y": 0.7 }
+        },
+        "width": 0.026,
+        "tipRatio": 0.25
+      },
+      "material": {
+        "color": "#EAFDFF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.85 },
+            { "t": 0.68, "value": 0.85 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        },
+        {
+          "property": "reveal",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.68, "value": 1, "ease": "outCubic" },
+            { "t": 1, "value": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slash-lower-filament",
+      "type": "slashRibbon",
+      "startAt": 0.035,
+      "duration": 0.46,
+      "geometry": {
+        "path": {
+          "start": { "x": -0.96, "y": -0.55 },
+          "control1": { "x": -0.22, "y": -0.53 },
+          "control2": { "x": 0.73, "y": -0.22 },
+          "end": { "x": 0.69, "y": 0.58 }
+        },
+        "width": 0.018,
+        "tipRatio": 0.32
+      },
+      "material": {
+        "color": "#8DEAFF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": { "param": "radius" } },
+            { "t": 1, "value": { "param": "radius" } }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 0.72 },
+            { "t": 0.7, "value": 0.72 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        },
+        {
+          "property": "reveal",
+          "keys": [
+            { "t": 0, "value": 0 },
+            { "t": 0.74, "value": 1, "ease": "outCubic" },
+            { "t": 1, "value": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slash-sparks",
+      "type": "shards",
+      "startAt": 0.04,
+      "duration": 0.58,
+      "geometry": {
+        "count": 18,
+        "size": 0.035,
+        "spread": 0.62,
+        "lift": 1.1,
+        "gravity": 2.4
+      },
+      "material": {
+        "color": "#D8FCFF",
+        "blend": "additive"
+      },
+      "tracks": [
+        {
+          "property": "radius",
+          "keys": [
+            { "t": 0, "value": 0.4 },
+            { "t": 1, "value": 2.5, "ease": "outCubic" }
+          ]
+        },
+        {
+          "property": "opacity",
+          "keys": [
+            { "t": 0, "value": 1 },
+            { "t": 1, "value": 0, "ease": "inQuad" }
+          ]
+        }
+      ]
+    }
+  ]
+}

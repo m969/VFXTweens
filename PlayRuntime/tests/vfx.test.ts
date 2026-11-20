@@ -21,6 +21,7 @@ import crystalShatter from "../public/effects/skill-crystal-shatter.vfx.json";
 import glassShatter from "../public/effects/skill-glass-shatter.vfx.json";
 import lightArcSlash from "../public/effects/skill-light-arc-slash.vfx.json";
 import slashArc from "../public/effects/skill-slash-arc.vfx.json";
+import risingCrescentSlash from "../public/effects/skill-slash-rising-crescent.vfx.json";
 import leftToRightSlash from "../public/effects/skill-slash-sweep-left-to-right.vfx.json";
 import wavePulse from "../public/effects/skill-wave-pulse.vfx.json";
 import {
@@ -78,6 +79,55 @@ describe("VFX effect definitions", () => {
       "slashArc",
       "shards"
     ]);
+  });
+
+  it("builds a curved ribbon mesh for the rising crescent slash", () => {
+    const definition = parseEffectDefinition(risingCrescentSlash);
+
+    expect(definition.id).toBe("skill.slash-rising-crescent");
+    expect(definition.layers.map((layer) => layer.type)).toEqual([
+      "slashRibbon",
+      "slashRibbon",
+      "slashRibbon",
+      "slashRibbon",
+      "slashRibbon",
+      "slashRibbon",
+      "shards"
+    ]);
+    const ribbonLayers = definition.layers.filter(
+      (candidate) => candidate.type === "slashRibbon"
+    );
+    expect(
+      new Set(ribbonLayers.map((layer) => JSON.stringify(layer.geometry.path)))
+        .size
+    ).toBe(4);
+    const layer = definition.layers[0];
+    if (!layer || layer.type !== "slashRibbon") {
+      throw new Error("Expected a slash ribbon layer.");
+    }
+    expect(
+      layer.tracks
+        .find((track) => track.property === "reveal")
+        ?.keys.map((key) => key.value)
+    ).toEqual([0, 1, 1]);
+
+    const instance = new EffectInstance(definition, {
+      position: new THREE.Vector3()
+    });
+    const mesh = instance.root.children[0];
+    if (
+      !(mesh instanceof THREE.Mesh) ||
+      !(mesh.material instanceof THREE.ShaderMaterial)
+    ) {
+      throw new Error("Expected a shader-backed slash ribbon mesh.");
+    }
+    expect(mesh.geometry.getAttribute("aProgress").count).toBe(194);
+    expect(mesh.geometry.index?.count).toBe(576);
+    instance.seek(0.1);
+    expect(mesh.material.uniforms.uReveal.value).toBeGreaterThan(0);
+    expect(mesh.material.uniforms.uReveal.value).toBeLessThan(1);
+    expect(mesh.scale.x).toBeCloseTo(2.4);
+    instance.dispose(new THREE.Scene());
   });
 
   it("parses the left-to-right slash sweep with a continuous angle track", () => {
@@ -283,6 +333,7 @@ describe("VFX effect definitions", () => {
       wavePulse,
       slashArc,
       lightArcSlash,
+      risingCrescentSlash,
       leftToRightSlash,
       doublePointedSlash,
       doublePointedLeftToRightSlash,
@@ -315,6 +366,7 @@ describe("VFX effect definitions", () => {
       "斩击",
       "斩击",
       "斩击",
+      "斩击",
       "碎裂",
       "碎裂",
       "碎裂",
@@ -337,6 +389,7 @@ describe("VFX effect definitions", () => {
       "波纹脉冲",
       "弧形斩击",
       "光弧粒子斩击",
+      "上挑弯月斩击",
       "横向光弧斩击",
       "双尖光弧斩击",
       "双尖横向斩击",
@@ -447,6 +500,29 @@ describe("VFX effect definitions", () => {
 
     expect(() => parseEffectDefinition(invalid)).toThrow(
       "only slashArc layers support it"
+    );
+  });
+
+  it("requires a bounded reveal track on slash ribbon layers", () => {
+    const invalid = structuredClone(risingCrescentSlash);
+    const revealTrack = invalid.layers[0].tracks.find(
+      (track) => track.property === "reveal"
+    );
+    if (!revealTrack) {
+      throw new Error("Expected a reveal track.");
+    }
+    revealTrack.keys[1].value = 1.1;
+
+    expect(() => parseEffectDefinition(invalid)).toThrow(
+      "must be at most 1."
+    );
+
+    const missingTrack = structuredClone(risingCrescentSlash);
+    missingTrack.layers[0].tracks = missingTrack.layers[0].tracks.filter(
+      (track) => track.property !== "reveal"
+    );
+    expect(() => parseEffectDefinition(missingTrack)).toThrow(
+      "requires a reveal track"
     );
   });
 

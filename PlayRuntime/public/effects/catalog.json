@@ -74,6 +74,12 @@
             "file": "skill-light-arc-slash.vfx.json"
         },
         {
+            "id": "skill.slash-rising-crescent",
+            "name": "上挑弯月斩击",
+            "category": "斩击",
+            "file": "skill-slash-rising-crescent.vfx.json"
+        },
+        {
             "id": "skill.slash-sweep-left-to-right",
             "name": "横向光弧斩击",
             "category": "斩击",
